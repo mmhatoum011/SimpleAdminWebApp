@@ -1,0 +1,78 @@
+﻿@model SimpleAdminWebApp.Models.DataEntryModel
+
+@{
+    ViewData["Title"] = "Data Entry";
+}
+
+<h2>Data Entry</h2>
+
+<form method="post" asp-action="SaveData">
+    <div class="mb-3">
+        <label asp-for="SelectedUserId" class="form-label">Select User to Send Report To:</label>
+        <select asp-for="SelectedUserId" class="form-select" asp-items="Model.Users">
+            <option value="">-- Select User --</option>
+        </select>
+    </div>
+
+    <table class="table table-bordered table-sm w-auto">
+        <thead class="table-light">
+            <tr>
+                <th>DeliveryNo</th>
+                <th>Project</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Pump Use</th>
+                <th>Required Qty</th>
+                <th>Delivered Qty</th>
+                <th>Truck Qty</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < 1; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="text" name="Items[@(i)].DeliveryNo" class="form-control"
+                               value="@(Model.Items.Count > i ? Model.Items[i].DeliveryNo : "")" />
+                    </td>
+                    <td>
+                        <input type="text" name="Items[@(i)].Project" class="form-control"
+                               value="@(Model.Items.Count > i ? Model.Items[i].Project : "")" />
+                    </td>
+                    <td>
+                        <input type="text" name="Items[@(i)].Customer" class="form-control"
+                               value="@(Model.Items.Count > i ? Model.Items[i].Customer : "")" />
+                    </td>
+                    <td>
+                        <input type="text" name="Items[@(i)].Date" class="form-control"
+                               value="@(Model.Items.Count > i ? Model.Items[i].Date : "")" />
+                    </td>
+                    <td>
+                        <input type="text" name="Items[@(i)].PumpUse" class="form-control"
+                               value="@(Model.Items.Count > i ? Model.Items[i].PumpUse : "")" />
+                    </td>
+                    <td>
+                        <input type="number" name="Items[@(i)].RequiredQuantity" class="form-control"
+                               value="@(Model.Items.Count > i ? Model.Items[i].RequiredQuantity.ToString() : "")" />
+                    </td>
+                    <td>
+                        <input type="number" name="Items[@(i)].DeliveredQuantity" class="form-control"
+                               value="@(Model.Items.Count > i ? Model.Items[i].DeliveredQuantity.ToString() : "")" />
+                    </td>
+                    <td>
+                        <input type="number" name="Items[@(i)].TruckQuantity" class="form-control"
+                               value="@(Model.Items.Count > i ? Model.Items[i].TruckQuantity.ToString() : "")" />
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info mt-3">@TempData["Message"]</div>
+}

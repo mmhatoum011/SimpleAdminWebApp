@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "Report";
+    ViewBag.ActiveTab = "Report";
+}
+
+<div style="text-align:right;">
+    <a href="/Login/Logout">Logout</a>
+</div>
+
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-primary">Report</h2>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form action="/Dashboard/GeneratePdf" method="get" class="d-inline me-2">
+                <button type="submit" class="btn btn-outline-primary">Download PDF</button>
+            </form>
+
+            <form method="post" action="/Dashboard/GeneratePdf" class="d-inline">
+                <button type="submit" class="btn btn-primary">Generate PDF</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <strong>Report Data</strong>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th> Delivery Number</th>
+                            <th>Project&Location</th>
+                            <th>Customer Name</th>
+                            <th>Date</th>
+                            <th>Pump Use</th>
+                            <th>Required Quantity</th>
+                            <th>Delivered Quantity</th>
+                            <th>Truck Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.TableData != null)
+                        {
+                            var tableData = ViewBag.TableData as string[][];
+                            for (int i = 0; i < tableData.Length; i++)
+                            {
+                                <tr>
+                                    @for (int j = 0; j < 8; j++)
+                                    {
+                                        <td>@(j < tableData[i].Length ? tableData[i][j] : "")</td>
+                                    }
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center">No data available.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <strong>Signature</strong>
+        </div>
+        <div class="card-body">
+            <form method="post" asp-controller="Dashboard" asp-action="SubmitSignature">
+                <div class="mb-3 d-flex flex-column align-items-start">
+                    <canvas id="signature-pad" width="300" height="120"
+                            style="border:1px solid #000; background:#fff; border-radius: 8px;">
+                    </canvas>
+                </div>
+                <input type="hidden" id="signature-data" name="SignatureData" />
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-secondary" onclick="clearSignature()">Clear</button>
+                    <button type="submit" class="btn btn-success" onclick="saveSignature()">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+@if (ViewBag.TableData != null)
+{
+    var tableData = ViewBag.TableData as string[][];
+    // render
+}
+
+@section Scripts {
+    <script>
+        const canvas = document.getElementById('signature-pad');
+        const ctx = canvas.getContext('2d');
+
+        let drawing = false;
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        function startDrawing(e) {
+            drawing = true;
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+        }
+
+        function draw(e) {
+            if (!drawing) return;
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            drawing = false;
+        }
+
+        function clearSignature() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('signature-data').value = '';
+        }
+
+        function saveSignature() {
+            const dataUrl = canvas.toDataURL('image/png');
+            document.getElementById('signature-data').value = dataUrl;
+        }
+    </script>
+}

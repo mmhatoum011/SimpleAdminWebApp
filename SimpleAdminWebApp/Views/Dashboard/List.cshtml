@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "All Reports";
+}
+
+<h2>All Saved Reports</h2>
+
+@if (ViewBag.ReportFiles != null && ViewBag.ReportFiles.Count > 0)
+{
+    <ul>
+        @foreach (var file in ViewBag.ReportFiles)
+        {
+            <li>
+                <a href="~/savedReports/@file" target="_blank">@file</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No reports found.</p>
+}
+

@@ -1,0 +1,19 @@
+﻿@foreach (var report in Model)
+{
+    <div>
+        <h4>Report Created: @report.CreatedAt</h4>
+        <p>@report.Data</p>
+
+        <form method="post" action="@Url.Action("SubmitSignature", "Dashboard")">
+            <input type="hidden" name="reportId" value="@report.Id" />
+            <label>Signature:</label>
+            <input type="text" name="signature" />
+            <button type="submit">Sign Report</button>
+        </form>
+
+        <form method="post" action="@Url.Action("GeneratePdf", "Dashboard")">
+            <input type="hidden" name="reportId" value="@report.Id" />
+            <button type="submit">Generate PDF</button>
+        </form>
+    </div>
+}

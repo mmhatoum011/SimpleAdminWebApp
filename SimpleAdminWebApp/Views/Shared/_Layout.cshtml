@@ -1,0 +1,98 @@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    var activeTab = ViewBag.ActiveTab ?? "Tab1";
+    var role = Context.Session.GetString("UserRole");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DELIVERY NOTE</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true" />
+    <style>
+        /* your custom styles (unchanged) */
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DELIVERY NOTE</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @* Only show if not on Login page *@
+                        @if (!(currentController == "Login" && currentAction == "Index"))
+                        {
+                            @if (role == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/Login/Logout">Logout</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        @if (!(currentController == "Login" && currentAction == "Index"))
+        {
+            <div class="tab-nav">
+                <ul class="nav nav-tabs">
+                    
+                    @if (role == "Admin")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link @(activeTab == "Dashboard" ? "active" : "")" href="/Dashboard/Index">Dashboard</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link @(activeTab == "Data" ? "active" : "")" href="/Data/Index">Data</a>
+						</li>
+                        <li class="nav-item">
+                            <a class="nav-link @(activeTab == "CreateUser" ? "active" : "")" href="/Account/CreateUser">Create User</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(activeTab == "ManageUsers" ? "active" : "")" href="/Account/ManageUsers">Manage Users</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link @(activeTab == "Tab1" ? "active" : "")" href="/Dashboard?tab=Tab1">Tab1</a>
+                        </li>
+                        
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link @(activeTab == "Report" ? "active" : "")" href="/Dashboard/Report">Report</a>
+                    </li>
+                </ul>
+            </div>
+        }
+
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <li><a asp-controller="Dashboard" asp-action="List">All Reports</a></li>
+    <li><a asp-controller="Dashboard" asp-action="UserReportList">My Reports</a></li>
+
+</body>
+</html>

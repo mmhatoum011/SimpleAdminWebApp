@@ -1,0 +1,15 @@
+﻿@model SimpleAdminWebApp.Models.DataEntryModel
+
+<h2>Save Data</h2>
+
+<form method="post" asp-action="SaveData">
+    <div>
+        <label asp-for="SelectedUserId">Select User</label>
+        <select asp-for="SelectedUserId" asp-items="Model.Users" class="form-select">
+            <option value="">-- Select User --</option>
+        </select>
+    </div>
+
+    <button type="submit">Save</button>
+</form>
+

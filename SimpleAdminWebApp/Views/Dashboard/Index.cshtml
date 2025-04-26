@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    var activeTab = ViewBag.ActiveTab ?? "Tab1";
+}
+
+
+<h2>Dashboard</h2>
+<div style="text-align:right;">
+    <a href="/Login/Logout">Logout</a>
+</div>
+<h4 class="mt-5">Saved Reports</h4>
+<ul class="list-group mb-5">
+    @if (ViewBag.ReportFiles != null && ViewBag.ReportFiles.Count > 0)
+    {
+        foreach (var file in ViewBag.ReportFiles)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="~/reports/@file" target="_blank">@file</a>
+                <span class="badge bg-success">PDF</span>
+            </li>
+        }
+    }
+    else
+    {
+        <li class="list-group-item">No reports have been generated yet.</li>
+    }
+</ul>
+
+
+
+<p>You are in @activeTab.</p>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Welcome to the Dashboard</h2>
+<p>This is the default tab (Tab1).</p>
+
+@{
+    ViewData["Title"] = "Data Entry";
+}
+
+<h2>Data Entry</h2>
+
+<p>Welcome to the Data Entry page!</p>
+

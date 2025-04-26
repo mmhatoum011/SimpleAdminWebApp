@@ -1,0 +1,27 @@
+﻿@model IEnumerable<SimpleAdminWebApp.Models.User>
+
+<h2>Manage Users</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Username</td>
+                <td>@user.Role</td>
+                <td>
+                    <!-- Add action buttons here, e.g., Edit, Delete -->
+                    <a href="@Url.Action("EditUser", "Account", new { id = user.Id })">Edit</a> |
+                    <a href="@Url.Action("DeleteUser", "Account", new { id = user.Id })">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 40px 30px;
+        width: 100%;
+        max-width: 350px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        color: #fff;
+    }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+            color: #00fff7;
+            text-shadow: 0 0 10px #00fff7;
+        }
+
+    .form-group {
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: -12px;
+            left: 10px;
+            background: rgba(15, 12, 41, 0.8);
+            padding: 0 6px;
+            font-size: 0.8rem;
+            color: #00fff7;
+            pointer-events: none;
+        }
+
+    .btn-login {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(90deg, #00fff7, #00c3ff);
+        border: none;
+        border-radius: 8px;
+        color: #000;
+        font-weight: bold;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 0 15px #00fff7;
+    }
+
+        .btn-login:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px #00fff7;
+        }
+
+    .error-msg {
+        color: #ff6b6b;
+        text-align: center;
+        margin-top: 15px;
+    }
+</style>
+
+<div class="login-container">
+    <h2>Login</h2>
+    <form method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" name="username" autocomplete="off" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" name="password" />
+        </div>
+        <button type="submit" class="btn-login">Login</button>
+    </form>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="error-msg">@ViewBag.Message</div>
+    }
+</div>
