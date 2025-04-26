@@ -1,16 +1,18 @@
-# Use the official .NET SDK image to build the app
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-
-# Set the working directory
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+EXPOSE 80
 
-# Copy the csproj and restore any dependencies (via nuget)
-COPY *.csproj ./
-RUN dotnet restore
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
 
-# Copy the rest of the files and publish the app
-COPY . ./
-RUN dotnet publish -c Release -o out
+# 👇 Copy only the project folder
+COPY SimpleAdminWebApp/SimpleAdminWebApp/ .
 
-# Define the entrypoint
-ENTRYPOINT ["dotnet", "out/SimpleAdminWebApp.dll"]
+RUN dotnet restore SimpleAdminWebApp.csproj
+
+RUN dotnet publish -c Release -o /app
+
+FROM base AS final
+WORKDIR /app
+COPY --from=build /app .
+ENTRYPOINT ["dotnet", "SimpleAdminWebApp.dll"]

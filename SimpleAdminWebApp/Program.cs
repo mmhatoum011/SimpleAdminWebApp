@@ -2,22 +2,19 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddSession(); // Required to use Session
-builder.Services.AddSingleton<UserService>();
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<UserService>();
-
-// ✅ Add session services
+// Add session services
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-builder.Services.AddScoped<UserService>();
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+// Register the UserService (choose either Singleton or Scoped)
+builder.Services.AddScoped<UserService>();  // Scoped ensures it's created per request
 
 var app = builder.Build();
 
@@ -42,8 +39,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Index}/{id?}");
 
-app.UseStaticFiles();
-
-
 app.Run();
-
