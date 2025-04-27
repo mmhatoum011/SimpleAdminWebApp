@@ -1,12 +1,5 @@
-# Ignore .NET build files
 bin/
 obj/
-
-# Ignore personal files and directories
-.bash_history
-.dotnet/
-.ssh/
-Documents/
-Downloads/
-Pictures/
-OneDrive/
+*.user
+*.vs
+.vscode/
